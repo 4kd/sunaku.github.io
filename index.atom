@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8" ?><feed xmlns="http://www.w3.org/2005/Atom"><id>https://sunaku.github.io/</id><link href="https://sunaku.github.io/" /><link href="https://sunaku.github.io/index.atom" rel="self" /><title>The Terminal Programmer</title><subtitle type="html"><![CDATA[<p><a href="about.html"><img src="LinuxZealot.png" alt="This image is the &quot;Linux Zealot&quot; icon from the &quot;Forum Faces 2&quot;
+   icon set by Cian Walsh of Afterglow Design (www.afterglow.ie)"></a></p>
+
+<p><a href="https://github.com/sunaku">I program</a>, incessantly,                     <br>
+and I fear it will be the <a href="the-cult-of-codethulu.html">end of me</a>.        <br>
+I cannot stop, for it commands my will,     <br>
+<a href="about.html">thus I am</a> the terminal programmer, <a href="4-reminders-6-paramitas-1-universe.html">nil</a>.   <br></p>
+]]></subtitle><updated>2018-07-24T17:24:38-07:00</updated><author><name>Suraj N. Kurapati</name></author><entry><id>https://sunaku.github.io/tmux-select-pane.html</id><link href="https://sunaku.github.io/tmux-select-pane.html" /><title>Using the same keys to select tmux panes and Vim splits</title><updated>2018-07-24T17:24:38-07:00</updated><published>2015-05-05T17:43:38-07:00</published><author><name>Suraj N. Kurapati</name></author><category term="solution"></category><category term="usability"></category><category term="tmux"></category><category term="vim"></category><summary type="html"><![CDATA[<dl><dt class="title"><time datetime="2018-07-24T17:24:38-07:00">24 July 2018: </time></dt><dd class="content"><p>I&rsquo;ve improved specificity of the glob pattern for detecting Vim&rsquo;s presence.</p>
+
+<p>To illustrate, here is how the code appeared before this change:</p>
+<div class="highlight"><pre class="highlight shell"><code>bind-key <span class="nt">-n</span> M-h run-shell                              <span class="s1">' \
+  case "#{pane_current_command}" in (*vi*) vim=1;; esac; \
+  case "${vim:-0}#{window_zoomed_flag}" in               \
+  (00) tmux select-pane -L                            ;; \
+  (10) tmux send-keys M-h                             ;; \
+  (11) tmux send-keys C-w h                           ;; \
+  esac                                                   \
+'</span>
+</code></pre></div>
+<p>In contrast, here is how the code appears now, after the change:</p>
+<div class="highlight"><pre class="highlight shell"><code>bind-key <span class="nt">-n</span> M-h run-shell <span class="s1">'                                  \
+  case "#{pane_current_command}" in (*vim*) inside=1;; esac; \
+  case "${inside:-0}#{window_zoomed_flag}" in                \
+  (00) tmux select-pane -L                          ;;       \
+  (10) tmux send-keys M-h                           ;;       \
+  (11) tmux send-keys C-w h                         ;;       \
+  esac                                                       \
+'</span>
+</code></pre></div></dd></dl><dl><dt class="title"><time datetime="2016-10-08T14:38:34-07:00"> 8 October 2016: </time></dt><dd class="content"><p>I&rsquo;ve eliminated the argument position arithmetic using <code>case</code>
+statements.  The code is more compact and readable now, though it still
+uses binary encoding.</p>
+
+<p>To illustrate, here is how the code appeared before this change:</p>
+<div class="highlight"><pre class="highlight shell"><code>bind-key <span class="nt">-n</span> M-h run-shell                                     <span class="s1">' \
+  test #{window_zoomed_flag} -eq 0; max=$?;                     \
+  cmd="#{pane_current_command}"; test -n "${cmd#*vim}"; vim=$?; \
+  set --                                                        \
+    "tmux select-pane -L"                                       \
+    ""                                                          \
+    "tmux send-keys M-h"                                        \
+    "tmux send-keys C-w h";                                     \
+  shift $(( 2*vim + max ));                                     \
+  eval "$1";                                                    \
+'</span>
+</code></pre></div>
+<p>In contrast, here is how the code appears now, after the change:</p>
+<div class="highlight"><pre class="highlight shell"><code>bind-key <span class="nt">-n</span> M-h run-shell                              <span class="s1">' \
+  case "#{pane_current_command}" in (*vi*) vim=1;; esac; \
+  case "${vim:-0}#{window_zoomed_flag}" in               \
+  (00) tmux select-pane -L                            ;; \
+  (10) tmux send-keys M-h                             ;; \
+  (11) tmux send-keys C-w h                           ;; \
+  esac                                                   \
+'</span>
+</code></pre></div>
+<p>I&rsquo;ll need to update the explanation section accordingly, someday!</p>
+</dd></dl>]]></summary></entry><entry><id>https://sunaku.github.io/vegan-for-life.html</id><link href="https://sunaku.github.io/vegan-for-life.html" /><title>Vegan: Healthy, Sustainable, Compassionate Living</title><updated>2018-06-12T19:45:53-07:00</updated><published>2017-01-30T19:29:13-08:00</published><author><name>Suraj N. Kurapati</name></author><category term="life"></category><category term="ethics"></category><category term="health"></category><category term="science"></category><category term="nutrition"></category><category term="climate"></category><summary type="html"><![CDATA[<dl><dt class="title"><time datetime="2018-06-12T19:45:53-07:00">12 June 2018: </time></dt><dd class="content"><p>Reorganized article structure for accessibility, plus new expanded content.</p>
+</dd></dl><dl><dt class="title"><time datetime="2018-06-09T21:07:39-07:00"> 9 June 2018: </time></dt><dd class="content"><p>Added official tagline descriptions for all the Nutritionfacts.org videos.
+Added dairy industry videos for both USA and India (<a href="https://youtu.be/jXfTJRoX_zE">a special case?</a> <a href="https://sharan-india.org/cattle-in-india/">nope!</a>).</p>
+</dd></dl><dl><dt class="title"><time datetime="2018-06-02T20:21:51-07:00"> 2 June 2018: </time></dt><dd class="content"><p>Added <a href="https://is.gd/cahiwi">https://is.gd/cahiwi</a> cloud drive containing electronic copies of
+educational materials presented in this article.  Also added <a href="https://youtu.be/Zzfq2AAYn38">Humanity&rsquo;s True
+Purpose</a> short film which eloquently frames the
+struggle between human nature and our species&rsquo; future (Go Vegan!) from planet
+Earth&rsquo;s perspective.</p>
+</dd></dl><dl><dt class="title"><time datetime="2017-10-08T11:03:50-07:00"> 8 October 2017: </time></dt><dd class="content"><p>Added Dr. Neal Barnard&rsquo;s lecture on &ldquo;Plant-Based Nutrition Essentials&rdquo; (meant
+for doctors but <em>anyone</em> can understand it) under the <a href="#to-boost-nutrition">What about
+nutrition?</a> section.</p>
+</dd></dl><dl><dt class="title"><time datetime="2017-04-22T12:22:13-07:00">22 April 2017: </time></dt><dd class="content"><p>Added <a href="https://www.cowspiracy.com/earthday">Cowspiracy&rsquo;s infographic for Earth Day</a> under the <a href="#sustainable-living">environment section</a>.</p>
+</dd></dl>]]></summary></entry><entry><id>https://sunaku.github.io/hterm-shift-pageup.html</id><link href="https://sunaku.github.io/hterm-shift-pageup.html" /><title>Enabling shifted page keys in hterm</title><updated>2018-02-04T14:19:57-08:00</updated><published>2018-02-04T14:19:57-08:00</published><author><name>Suraj N. Kurapati</name></author><category term="solution"></category><category term="terminal"></category><category term="ChromeOS"></category></entry><entry><id>https://sunaku.github.io/papercolor-terminal-color-scheme.html</id><link href="https://sunaku.github.io/papercolor-terminal-color-scheme.html" /><title>PaperColor terminal color scheme</title><updated>2018-01-09T15:54:15-08:00</updated><published>2018-01-09T15:54:15-08:00</published><author><name>Suraj N. Kurapati</name></author><category term="terminal"></category><category term="color"></category><category term="vim"></category><category term="linux"></category></entry><entry><id>https://sunaku.github.io/meditation-five-steps.html</id><link href="https://sunaku.github.io/meditation-five-steps.html" /><title>Meditation in five steps</title><updated>2017-11-12T15:53:09-08:00</updated><published>2017-11-12T15:53:09-08:00</published><author><name>Suraj N. Kurapati</name></author><category term="life"></category><category term="wisdom"></category><category term="meditation"></category></entry><entry><id>https://sunaku.github.io/tmux-yank-osc52.html</id><link href="https://sunaku.github.io/tmux-yank-osc52.html" /><title>Copying to clipboard from tmux and Vim using OSC 52</title><updated>2017-04-29T10:44:40-07:00</updated><published>2014-04-19T13:04:46-07:00</published><author><name>Suraj N. Kurapati</name></author><category term="solution"></category><category term="tmux"></category><category term="vim"></category><category term="terminal"></category><category term="clipboard"></category><category term="yank"></category><summary type="html"><![CDATA[<dl><dt class="title"><time datetime="2017-04-29T10:44:40-07:00">29 April 2017: </time></dt><dd class="content"><p>Updated configuration snippet for tmux 2.4, using <code>send-keys -X copy-pipe</code>.</p>
+</dd></dl><dl><dt class="title"><time datetime="2016-01-16T21:21:57-08:00">16 January 2016: </time></dt><dd class="content"><p><a href="http://www.cs.unc.edu/%7Egb/">Gary Bishop</a> discovered that the Vim mapping
+presented in this article needed to <em>explicitly</em> redirect the OSC 52 escape
+sequence generated by the yank(1) script to the terminal device in order to
+work correctly in certain environments (Linux =&gt; tmux =&gt; ssh =&gt; Chromebook):</p>
+<div class="highlight"><pre class="highlight viml"><code><span class="p">:</span><span class="k">call</span> system<span class="p">(</span><span class="s1">'yank &gt; /dev/tty'</span><span class="p">,</span> @<span class="m">0</span><span class="p">)</span>
+</code></pre></div>
+<p>See the comments thread at the bottom of this article for more information.</p>
+</dd></dl><dl><dt class="title"><time datetime="2014-11-09T11:40:00-08:00"> 9 November 2014: </time></dt><dd class="content"><p>Updated yank(1) script. Added <code>M-Y</code> and <code>y</code> copy-pipe shortcuts for tmux.</p>
+</dd></dl><dl><dt class="title"><time datetime="2014-07-09T13:09:01-07:00"> 9 July 2014: </time></dt><dd class="content"><p>I have updated the yank(1) script in this article to copy its input text
+into tmux&rsquo;s clipboard <em>in addition to</em> the operating system clipboard.</p>
+</dd></dl>]]></summary></entry><entry><id>https://sunaku.github.io/elixir-fileio-speedup.html</id><link href="https://sunaku.github.io/elixir-fileio-speedup.html" /><title>Speeding up I/O on very large files in Elixir</title><updated>2017-03-07T16:35:00-08:00</updated><published>2017-03-07T16:35:00-08:00</published><author><name>Suraj N. Kurapati</name></author><category term="solution"></category><category term="elixir"></category><category term="cache"></category><category term="unicode"></category><category term="performance"></category></entry><entry><id>https://sunaku.github.io/zabutom-zeta-force-level-2.html</id><link href="https://sunaku.github.io/zabutom-zeta-force-level-2.html" /><title>zabutom&#39;s Zeta Force Level 2, rearranged</title><updated>2017-01-15T17:24:54-08:00</updated><published>2017-01-15T17:24:54-08:00</published><author><name>Suraj N. Kurapati</name></author><category term="chiptune"></category><category term="music"></category><category term="remix"></category><category term="arcade"></category><category term="ringtone"></category></entry><entry><id>https://sunaku.github.io/elixir-parallel-grep.html</id><link href="https://sunaku.github.io/elixir-parallel-grep.html" /><title>A parallel grep(1) prototype in Elixir</title><updated>2016-07-31T23:35:29-07:00</updated><published>2016-07-31T23:35:29-07:00</published><author><name>Suraj N. Kurapati</name></author><category term="prototype"></category><category term="benchmark"></category><category term="speedup"></category></entry><entry><id>https://sunaku.github.io/git-rebase-autocon.html</id><link href="https://sunaku.github.io/git-rebase-autocon.html" /><title>Automatic merge conflict resolution for git-rebase(1)</title><updated>2016-07-15T10:51:12-07:00</updated><published>2016-01-03T22:31:05-08:00</published><author><name>Suraj N. Kurapati</name></author><category term="tool"></category><category term="git"></category><category term="shell"></category><category term="script"></category><summary type="html"><![CDATA[<dl><dt class="title"><time datetime="2016-07-15T10:51:12-07:00">15 July 2016: </time></dt><dd class="content"><p>Commits that were set aside had empty message bodies, caused by Git &gt; 2.3.6
+producing no output when <code>--</code> was specified just before the revision range.</p>
+</dd></dl><dl><dt class="title"><time datetime="2016-06-24T21:28:06-07:00">24 June 2016: </time></dt><dd class="content"><p>Use <code>--fork-point</code> option for <code>git rebase</code> instead of detecting leftovers.</p>
+</dd></dl><dl><dt class="title"><time datetime="2016-06-17T21:34:06-07:00">17 June 2016: </time></dt><dd class="content"><ul>
+<li>When a conflicting commit originates from a prior version of the target,
+we can safely absorb it via <code>git rebase --skip</code> to resolve the conflict.</li>
+<li>Apply proper patch(1) formatting when setting aside conflicting commits.</li>
+<li>Only show &ldquo;important&rdquo; message if any conflicting commits were set aside.</li>
+<li>Gracefully abort rebase when the script is terminated prematurely.</li>
+<li>Don&rsquo;t summarize any differences after rebasing: do one thing well.</li>
+</ul>
+</dd></dl>]]></summary></entry><entry><id>https://sunaku.github.io/tmux-layout-dwindle.html</id><link href="https://sunaku.github.io/tmux-layout-dwindle.html" /><title>Porting dwm&#39;s dwindle layout to tmux</title><updated>2016-05-14T23:04:54-07:00</updated><published>2016-05-12T15:50:59-07:00</published><author><name>Suraj N. Kurapati</name></author><category term="solution"></category><category term="tmux"></category><category term="dwm"></category><category term="shell"></category><category term="script"></category><summary type="html"><![CDATA[<dl><dt class="title"><time datetime="2016-05-14T23:04:54-07:00">14 May 2016: </time></dt><dd class="content"><ul>
+<li>Add <code>s</code> flag for spiral trajectory.</li>
+</ul>
+</dd></dl><dl><dt class="title"><time datetime="2016-05-13T13:28:58-07:00">13 May 2016: </time></dt><dd class="content"><ul>
+<li>Add <code>h</code> flag for horizontal branches.</li>
+<li>Restore current/last pane selection.</li>
+</ul>
+</dd></dl>]]></summary></entry></feed>
